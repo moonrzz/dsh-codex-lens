@@ -1,6 +1,6 @@
 {
   "name": "@local/dsh-codex-bridge",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "private": true,
   "type": "module",
   "description": "Codex Lens: inspect a Codex thread from the DSH right sidebar — overview, live activity, workspace files, stats.",

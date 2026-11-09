@@ -243,6 +243,7 @@ window.__ModuleLoader__.load({
 .dcb-groupName{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .dcb-count{flex:none;font-variant-numeric:tabular-nums;opacity:.8}
 .dcb-thread{box-sizing:border-box;width:100%;display:grid;grid-template-columns:8px minmax(0,1fr);column-gap:7px;row-gap:1px;padding:5px 7px;margin:1px 0;background:none;border:1px solid transparent;border-radius:6px;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.dcb-threadBusy{opacity:.72;cursor:progress}
 .dcb-thread:hover{background:var(--dsw-alias-bg-layer-2)}
 .dcb-threadBound{border-color:var(--dsw-alias-brand-primary)}
 .dcb-threadSide{padding-left:16px;margin-left:4px;border-left:2px solid var(--dsw-alias-border-l1);border-radius:0 6px 6px 0}
@@ -462,6 +463,34 @@ window.__ModuleLoader__.load({
     }
 
     function ThreadRow({ thread, bound, now, t, onBind, onOpen, busy }) {
+      const clickTimer = React.useRef(null)
+      React.useEffect(
+        () => () => {
+          if (clickTimer.current) clearTimeout(clickTimer.current)
+        },
+        [],
+      )
+      const handleClick = () => {
+        if (clickTimer.current) {
+          clearTimeout(clickTimer.current)
+          clickTimer.current = null
+          onOpen(thread)
+          onBind(thread)
+          return
+        }
+        clickTimer.current = setTimeout(() => {
+          clickTimer.current = null
+          onBind(thread)
+        }, 240)
+      }
+      const handleDoubleClick = (event) => {
+        event.preventDefault()
+        if (clickTimer.current) {
+          clearTimeout(clickTimer.current)
+          clickTimer.current = null
+        }
+        onOpen(thread)
+      }
       const meta = [agoLabel(thread.updatedAt, now), `${thread.turnCount || 0} ${t('ui.turns')}`]
       if (thread.cwd) meta.push(thread.cwd)
       const kindClass = thread.kind === 'side' ? ' dcb-threadSide' : thread.kind === 'subagent' ? ' dcb-threadSubagent' : ''
@@ -476,14 +505,11 @@ window.__ModuleLoader__.load({
         'button',
         {
           type: 'button',
-          className: `dcb-thread${kindClass}${bound ? ' dcb-threadBound' : ''}`,
+          className: `dcb-thread${kindClass}${bound ? ' dcb-threadBound' : ''}${busy ? ' dcb-threadBusy' : ''}`,
           title: tooltip,
-          disabled: busy,
-          onClick: () => onBind(thread),
-          onDoubleClick: (event) => {
-            event.preventDefault()
-            onOpen(thread)
-          },
+          'aria-busy': busy || undefined,
+          onClick: handleClick,
+          onDoubleClick: handleDoubleClick,
         },
         h('span', { className: 'dcb-dot', 'data-status': thread.status || 'idle' }),
         h(
@@ -1131,7 +1157,14 @@ window.__ModuleLoader__.load({
       const [collapsed, setCollapsed] = React.useState({})
       const [olderOpen, setOlderOpen] = React.useState({})
       const [busyId, setBusyId] = React.useState(null)
-      const [detailId, setDetailId] = React.useState(null)
+      const detailKey = sessionId ? `dsh-codex-lens:detail:${sessionId}` : null
+      const [detailId, setDetailId] = React.useState(() => {
+        try {
+          return detailKey ? sessionStorage.getItem(detailKey) : null
+        } catch {
+          return null
+        }
+      })
 
       React.useEffect(() => {
         ensureStyle()
@@ -1200,11 +1233,24 @@ window.__ModuleLoader__.load({
         }
       }, [sessionId])
 
-      const openDetail = React.useCallback((thread) => {
-        // A double-click always fires the list's click handler first, so the
-        // bind request is already on its way; only switch the view here.
-        setDetailId(thread.id)
-      }, [])
+      const openDetail = React.useCallback(
+        (thread) => {
+          // Double-click is detected by ThreadRow itself (second click within
+          // 240ms), so the detail view opens immediately.
+          setDetailId(thread.id)
+          try {
+            if (detailKey) sessionStorage.setItem(detailKey, thread.id)
+          } catch {}
+        },
+        [detailKey],
+      )
+
+      const closeDetail = React.useCallback(() => {
+        setDetailId(null)
+        try {
+          if (detailKey) sessionStorage.removeItem(detailKey)
+        } catch {}
+      }, [detailKey])
 
       const now = Date.now()
       const boundId = binding?.binding?.threadId ?? null
@@ -1235,7 +1281,7 @@ window.__ModuleLoader__.load({
           initialThread: initial,
           t,
           boundThreadId: boundId,
-          onBack: () => setDetailId(null),
+          onBack: closeDetail,
           onBind: bind,
           onUnbind: unbind,
         })
@@ -1354,7 +1400,7 @@ window.__ModuleLoader__.load({
                 { className: 'dcb-boundRow' },
                 h('span', { className: 'dcb-dot', 'data-status': boundThread.status || 'idle' }),
                 h('span', { className: 'dcb-boundTitle', title: boundThread.cwd || '' }, boundThread.title),
-                h('button', { type: 'button', className: 'dcb-linkBtn', onClick: () => setDetailId(boundThread.id) }, t('ui.detail')),
+                h('button', { type: 'button', className: 'dcb-linkBtn', onClick: () => openDetail(boundThread) }, t('ui.detail')),
                 h('button', { type: 'button', className: 'dcb-linkBtn', onClick: unbind }, t('ui.unbind')),
               )
             : null,

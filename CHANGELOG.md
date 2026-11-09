@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.3 — 2026-11-09
+
+- Fix double-click on a thread row: the row is no longer disabled while the bind request is in flight, and a single click now waits 240 ms before binding, so the second click of a double-click is not swallowed.
+- Double-click is detected by the row itself (two clicks within 240 ms): it opens the thread detail and binds the thread in one gesture.
+- The open thread detail survives a page reload (`sessionStorage`, keyed by DSH session).
+
 ## 0.3.2 — 2026-11-09
 
 - New icon: brand-blue magnifier with a terminal prompt (`#4d6bfe`), legible down to 20 px.
