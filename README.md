@@ -66,6 +66,14 @@ Codex Lens 用只读方式把 Codex 的线程"透视"到 DSH：
 - 本机存在 Codex 数据目录 `~/.codex`（Codex 桌面端或 CLI 产生）
 - 文件定位依赖 Windows 资源管理器；其他平台可浏览文件树，但"在资源管理器中显示"不可用
 
+### 用 DSH CLI 安装（源码）
+
+```bash
+dsh plugin --profile desktop add github:moonrzz/dsh-codex-lens
+```
+
+把 `desktop` 换成你实际使用的 profile 名。npm 包发布后将增加一条更短的一键安装命令。
+
 ### 从源码安装
 
 ```bash

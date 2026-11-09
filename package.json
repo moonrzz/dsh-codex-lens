@@ -1,6 +1,6 @@
 {
   "name": "@local/dsh-codex-bridge",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "private": true,
   "type": "module",
   "description": "Codex Lens: inspect a Codex thread from the DSH right sidebar — overview, live activity, workspace files, stats.",
@@ -16,11 +16,12 @@
     "url": "https://github.com/moonrzz/dsh-codex-lens/issues"
   },
   "keywords": [
-    "dsh",
+    "dsh-plugin",
     "deepseek-harness",
     "codex",
-    "plugin",
-    "sidecar"
+    "sidebar",
+    "threads",
+    "developer-tools"
   ],
   "exports": {
     ".": "./index.js",
@@ -51,6 +52,19 @@
       "inject": [
         "@deepseek-ai/dsh-client-locale",
         "@deepseek-ai/dsh-client-ui-sidebar-right"
+      ]
+    },
+    "catalog": {
+      "category": "tools",
+      "summary": {
+        "en": "Browse and bind Codex threads in DSH; read history, live activity, workspace files and turn statistics.",
+        "zh": "在 DSH 右侧栏浏览并绑定 Codex 线程，读取历史、实时活动、工作区文件与轮次统计。"
+      },
+      "capabilities": [
+        "tools",
+        "systemPrompt",
+        "connection.fetch",
+        "agents"
       ]
     }
   }
