@@ -185,6 +185,8 @@ node --check lib/codex.js lib/live.js lib/fsbrowse.js lib/render.js lib/routes.j
 
 本地目录安装是 link：改 Host 代码后重启 DSH（或关闭/开启插件）生效；Client 改动刷新页面生效。
 
+隔离测试：新起一个 `DSH_HOME` 验证时，务必给该实例设置 `DSH_CODEX_BRIDGE_DIR`（如 `<测试目录>/bindings`）。绑定表默认存放在 `~/.dsh/dsh-codex-bridge/bindings.json`，是跨 profile 共用的；不隔离会让测试实例覆盖真实 profile 的绑定。
+
 ## 兼容性与限制
 
 - 只覆盖本机 `~/.codex` 中仍有 `thread_history` 记录的线程；rollout 被清理的线程仍可看历史，但没有实时尾部。
