@@ -2,9 +2,9 @@
 
 ## 0.4.0 — 2026-11-09
 
-- Rename the npm package to  so it can be published and installed with . The plugin id stays , so bindings, the sidebar tab and existing configuration keep working.
-- Add DSH marketplace metadata:  /  keywords and a  block (category , EN/ZH summaries, capabilities).
-- Add a 256 px PNG icon at  for marketplace cards.
+- Rename the npm package to `dsh-codex-lens` so it can be published and installed with `dsh plugin --profile desktop add dsh-codex-lens`. The plugin id stays `dsh-codex-bridge`, so bindings, the sidebar tab and existing configuration keep working.
+- Add DSH marketplace metadata: `dsh-plugin` / `deepseek-harness` keywords and a `dsh.catalog` block (category `tools`, EN/ZH summaries, capabilities).
+- Add a 256 px PNG icon at `docs/icon.png` for marketplace cards.
 - Document the GitHub install command in the README.
 
 ## 0.3.3 — 2026-11-09
