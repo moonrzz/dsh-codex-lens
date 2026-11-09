@@ -1,8 +1,11 @@
 {
   "name": "dsh-codex-lens",
   "version": "0.4.0",
-  "private": true,
   "type": "module",
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0",
+    "dsh": ">=0.1.7-rc.2 || >=0.2.0-rc.2"
+  },
   "description": "Codex Lens: inspect a Codex thread from the DSH right sidebar — overview, live activity, workspace files, stats.",
   "icon": "./icon.svg",
   "author": "moonrzz",
