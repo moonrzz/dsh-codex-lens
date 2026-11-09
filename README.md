@@ -6,7 +6,7 @@
 
 ![Codex Lens](docs/icon-preview.png)
 
-> 显示名 **Codex Lens / Codex 透镜**；插件 id 为 `dsh-codex-bridge`，本地包名 `@local/dsh-codex-bridge`。
+> 显示名 **Codex Lens / Codex 透镜**；插件 id 为 `dsh-codex-bridge`，包名 `dsh-codex-lens`。
 
 ## 为什么
 
@@ -72,7 +72,13 @@ Codex Lens 用只读方式把 Codex 的线程"透视"到 DSH：
 dsh plugin --profile desktop add github:moonrzz/dsh-codex-lens
 ```
 
-把 `desktop` 换成你实际使用的 profile 名。npm 包发布后将增加一条更短的一键安装命令。
+把 `desktop` 换成你实际使用的 profile 名。
+
+npm 包发布后可直接用：
+
+```bash
+dsh plugin --profile desktop add dsh-codex-lens
+```
 
 ### 从源码安装
 

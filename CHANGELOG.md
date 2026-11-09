@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.0 — 2026-11-09
+
+- Rename the npm package to  so it can be published and installed with . The plugin id stays , so bindings, the sidebar tab and existing configuration keep working.
+- Add DSH marketplace metadata:  /  keywords and a  block (category , EN/ZH summaries, capabilities).
+- Add a 256 px PNG icon at  for marketplace cards.
+- Document the GitHub install command in the README.
+
 ## 0.3.3 — 2026-11-09
 
 - Fix double-click on a thread row: the row is no longer disabled while the bind request is in flight, and a single click now waits 240 ms before binding, so the second click of a double-click is not swallowed.

@@ -2,7 +2,7 @@
 // thread to the current DSH session, and open a dedicated page for a thread
 // (metadata, live rollout feed, workspace file tree).
 window.__ModuleLoader__.load({
-  id: '@local/dsh-codex-bridge',
+  id: 'dsh-codex-lens',
   factory(require) {
     const React = require('react')
     const h = React.createElement
